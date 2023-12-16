@@ -758,3 +758,6 @@ footer > section > p {
   font-size: 14px;
   padding: 12px;
 }
+#label-usuario, #label-grupo{
+  color:white;
+}

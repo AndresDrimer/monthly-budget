@@ -6,21 +6,27 @@ include("header.php");
 include 'utils/get_dolarblue_value.php';
 
 $group_id = $_SESSION["group_id"];
-$sql = "SELECT * FROM groups WHERE group_id = '$group_id'";
+
+
+$sql = "SELECT * FROM groups WHERE group_id = ?";
+
 //added this line on every page only to prevent conn being marked as an error
 /** @var \mysqli $conn */
-$result = mysqli_query($conn, $sql);
-$actual_group = mysqli_fetch_assoc($result);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $group_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$actual_group = $result->fetch_assoc();
 
+//send datas to Session
 $user_id = $_SESSION["user_id"];
-
 if(!isset($_SESSION["current_month"])){
     $_SESSION["current_month"] = date('m');
  }
- 
  if(!isset($_SESSION["current_year"])){
     $_SESSION["current_year"] = date('Y');
  }
+
 ?>
 
 <!DOCTYPE html>

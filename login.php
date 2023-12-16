@@ -20,7 +20,7 @@ include("header.php");
 </head>
 
 <body>
-    <h3 class="white">Si no estás registrado aún podés hacerlo <a href='./register.php' class="underline">aquí</a></h3>
+    <h3 class="white less-width" style="padding-top:16px">Si no estás registrado aún podés hacerlo <a href='./register.php' class="underline">aquí</a></h3>
     <h1 class="white">LOGIN</h1>
     <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
         <label>User:</label>

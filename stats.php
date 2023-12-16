@@ -4,13 +4,16 @@ include("database.php");
 include("header.php");
 
 $group_id = $_SESSION["group_id"];
-$sql = "SELECT * FROM groups WHERE group_id = '$group_id'";
+$sql = "SELECT * FROM groups WHERE group_id = ?";
 /** @var \mysqli $conn */
-$result = mysqli_query($conn, $sql);
-$actual_group = mysqli_fetch_assoc($result);
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $group_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$actual_group = $result->fetch_assoc();
 
 $user_id = $_SESSION["user_id"];
-
 $month = $_SESSION["current_month"];
 $year = $_SESSION["current_year"];
 

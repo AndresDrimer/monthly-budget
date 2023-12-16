@@ -17,7 +17,7 @@ include("header.php");
 </head>
 
 <body>
-    <h1 class="white">REGISTRAR NUEVO USUARIO</h1>
+    <h1 class="white less-width" style="padding:8px 0;">REGISTRAR NUEVO USUARIO</h1>
     <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
         <label>Username:</label>
         <input type="text" name="username"><br>
