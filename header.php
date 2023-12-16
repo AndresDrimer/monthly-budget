@@ -9,7 +9,7 @@
 
             echo "<nav id='nav-medium-devices-and-above'>
                   <p id='hello-user-in-modal'>:) Hola " . ucfirst($_SESSION["username"]) . " !  </p>"
-                   . (strpos($_SERVER["REQUEST_URI"], "dashboard.php") !== false ? "<a href=pastmonths.php>⚡ Meses anteriores</a>" : "<a href=dashboard.php>⚡ Home</a>") . "<br>
+                   . (strpos($_SERVER["REQUEST_URI"], "dashboard.php") !== false ? "<a href=stats.php>📈 Stats</a>" : "<a href=dashboard.php>⚡ Home</a>") . "<br>
                   <a href=settings.php>🔨 Settings</a>
                   <form action='{$_SERVER["PHP_SELF"]}' method='post'>
                       <input type='submit' name='logout' value='❌ Logout' id='logout'>
@@ -33,7 +33,7 @@
         <?php
         echo "<nav>
                   <p id='hello-user-in-modal'>:) Hola " . $_SESSION["username"] . " !  </p>"
-                   . (strpos($_SERVER["REQUEST_URI"], "dashboard.php") !== false ? "<a href=pastmonths.php>⚡ Meses anteriores</a>" : "<a href=dashboard.php>⚡ Home</a>") . "<br>
+                   . (strpos($_SERVER["REQUEST_URI"], "dashboard.php") !== false ? "<a href=stats.php>📈 Stats</a>" : "<a href=dashboard.php>⚡ Home</a>") . "<br>
                   <a href=settings.php>🔨 Settings</a>
                   <form action='{$_SERVER["PHP_SELF"]}' method='post'>
                       <input type='submit' name='logout' value='❌ Logout' id='logout'>

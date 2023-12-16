@@ -3,6 +3,7 @@ ob_start();
 session_start();
 include("database.php");
 include("header.php");
+include 'utils/get_dolarblue_value.php';
 
 $group_id = $_SESSION["group_id"];
 $sql = "SELECT * FROM groups WHERE group_id = '$group_id'";
@@ -103,6 +104,9 @@ if(!isset($_SESSION["current_month"])){
                 <input type="submit" name="next_date_select" id="next-date-select" value=">">
             </form>
         </article>
+
+      
+
 
  <article id="button-for-modal">
         <button id="btn-add-transaction"><span>+</span></button>
@@ -211,35 +215,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST["form_id"] == "form_expenses
         if (mysqli_num_rows($check_result) == 0) {
 
             if ($_POST["form_id"] == "form_expenses") {
-
-                $sql = "INSERT INTO `$table_name` (transac_type, amount, description, inserted_by) VALUES ('expense', '$amount', '$description', '$user_id') ";
-
-                $insert_expense = mysqli_query($conn, $sql);
-
-                if (!$insert_expense) {
-                    die('Error: ' . mysqli_error($conn));
-                }
-
-                mysqli_close($conn);
-                header("Location: " . $_SERVER["PHP_SELF"]);
-                ob_end_flush();
-
-                exit();
-            } else if ($_POST["form_id"] == "form_incomes") {
-                $sql = "INSERT INTO `$table_name` (transac_type, amount, description, inserted_by) VALUES ('income', '$amount', '$description', '$user_id') ";
-
-                $insert_income = mysqli_query($conn, $sql);
-
-                if (!$insert_income) {
-                    die('Error: ' . mysqli_error($conn));
-                }
-
-                mysqli_close($conn);
-                header("Location: " . $_SERVER["PHP_SELF"]);
-                ob_end_flush();
-
-                exit();
-            }
+                $transac_type = 'expense';
+             } else if ($_POST["form_id"] == "form_incomes") {
+                $transac_type = 'income';
+             } else {
+                die('Error: Invalid form_id');
+             }
+             
+             $sql = "INSERT INTO `$table_name` (transac_type, amount, dolarblue, description, inserted_by) VALUES (?, ?, ?, ?, ?)";
+             
+             // Hacer una consulta preparada
+             $stmt = $conn->prepare($sql);
+             if (!$stmt){
+                die('Error: ' . mysqli_error($conn));
+             }
+             $stmt->bind_param("sddss", $transac_type, $amount, $dolar_blue, $description, $user_id);
+             $stmt->execute();
+             
+             mysqli_close($conn);
+             header("Location: " . $_SERVER["PHP_SELF"]);
+             ob_end_flush();
+             exit();
         }
     }
 }

@@ -40,12 +40,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Tenes que completar los dos campos para loguearte";
     } else {
         //make login
+
+        //sanitize
         $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
         $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_SPECIAL_CHARS);
 
         //check user existence in DB
         $sql =  "SELECT * FROM users WHERE username = '$username'";
+
+
         /** @var \mysqli $conn */
+        
         $result = mysqli_query($conn, $sql);
 
         //check password hash 
@@ -57,6 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["username"] = $username;
                 $_SESSION["user_id"] = $row["user_id"];
                 $_SESSION["email"] = $row["email"];
+
+
+                 //regenerate session id
+                session_regenerate_id();
 
                 //redirect user to select group
                 header("Location: index.php");

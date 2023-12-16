@@ -1,19 +1,39 @@
 MORE FEATURES:
 
-Ofrecer INVITACION por whtasapp con datos del grupo cuando lo creas - NO LO VOY A USAR POR AHORA; NO TIENE SENTIDO, ES MUY FACIL PASARLA SIN ESO
+- Actualizar ingreso de transac para permitir cambiar la fecha de NOW() a otra (aca ver como actualiza valor dolarblue)
 
-AGREAGR un icono para cada tabla (es un VARCHAR) ?? QUIZAS NO HAGA FALTA NI SUME NADA....
+- Quitar la marca de agua de la imagen de fondo.
 
-PAGINA Estadistica: Mes por ingreso/egreso y tambien por integrantes (cuando hay mas que uno). Graficos de torta o similar
+- Quzias hacer selector de idioma ingles / español ?
 
-Pagina Edit.
 
-Actualizar ingreso de transac para permitir cambiar la fecha de NOW() a otra 
+-Registrar DOMINIO y delegar
 
-Hacer filtro para que muestre por integrantes del grupo.
+Pagina: 
+SETTINGS: tenes para cambiar user y pass de usuario y del grupo, podes enviar el cambiod e grupo por whatsapp si queres. 
+Selector idioma=?
+Mandar info por whatsapp?
 
-Quitar la marca de agua de la imagen de fondo.
+//////////
 
-Quzias hacer selector de idioma ingles / español ?
+Ahora guarda valor de dolarblue_venta cuando guarda toda operacion....
 
-Adding composer to add envphpdot
+me queda pensar que hacer cuandop se cambia una fecha, eso queda a resolver (tiene una fechaActualizacion disponible la API).
+
+BORRAR DATOS y ACTUALIZAR !
+
+
+- Se sugiere otro modo de realizar acciones con la base de datos, usando consultas preparadas, de modo que : 
+$sql =  "SELECT * FROM users WHERE username = '$username'";
+ $result = mysqli_query($conn, $sql);
+
+terminaria siendo: 
+$stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+
+Fui cambiando varias queries segun esto, pero la de login no anduvo y la deje como estaba, investigarla un poco...
+
+CAMBIE OK: edit.php, INSERT income y expense (de dashboard.php) y register.php
+Podria probar con create.php, que tambien tiene un password hash, a ver si se soluciona el tema....

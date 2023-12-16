@@ -87,6 +87,7 @@ if ($_SERVER["REQUEST_METHOD"]  == "POST" && ($_POST["form_id"] == "form_group_c
         transaction_id INT PRIMARY KEY AUTO_INCREMENT,
         transac_type ENUM('income', 'expense'),
         amount DECIMAL(6,2),
+        dolarblue DECIMAL(6,2),
         description VARCHAR(255),
         created_at DATETIME DEFAULT NOW(),
         updated_at DATETIME DEFAULT NULL,
@@ -105,12 +106,7 @@ if ($_SERVER["REQUEST_METHOD"]  == "POST" && ($_POST["form_id"] == "form_group_c
             echo "usuario no logueado!!";
         } 
         else { 
-            {/*
-            $sql4 = "UPDATE users 
-            SET groups = IFNULL(CONCAT(groups, ',', '$group_id'), '$group_id')
-            WHERE user_id = '" . $_SESSION['user_id'] . "'";
-*/}
-
+            
             $cross_reference  = "INSERT INTO 	user_group_connection (user_id, group_id) VALUES ('" . $_SESSION['user_id'] . "', '$group_id')";
 
             $insert_group_in_user = mysqli_query($conn, $cross_reference);

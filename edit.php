@@ -62,14 +62,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $new_amount = filter_input(INPUT_POST, "amount", FILTER_VALIDATE_FLOAT);
 
     $sql_update = "UPDATE $table_name 
-    SET amount = $new_amount, description = '$new_description', updated_at = NOW()
-    WHERE transaction_id = '$row_id'";
+    SET amount = ?, description = ?, updated_at = NOW() WHERE transaction_id = ?";
 
-    $result_update = mysqli_query($conn, $sql_update);
+    //prepared statement
+    $stmt = $conn->prepare($sql_update);
+    if(!$stmt){
+        die('Error: ' . mysqli_error($conn));
+    }
+    $stmt->bind_param("dss", $new_amount, $new_description, $row_id);
+    $stmt->execute();
 
-    if(!$result_update){
-    die('Error: ' . mysqli_error($conn));
-}
     mysqli_close($conn);
     header("Location: dashboard.php");
     ob_end_flush();
