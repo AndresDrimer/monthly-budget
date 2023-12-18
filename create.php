@@ -86,8 +86,8 @@ if ($_SERVER["REQUEST_METHOD"]  == "POST" && ($_POST["form_id"] == "form_group_c
         $sql2 = "CREATE TABLE $table_name (
         transaction_id INT PRIMARY KEY AUTO_INCREMENT,
         transac_type ENUM('income', 'expense'),
-        amount DECIMAL(6,2),
-        dolarblue DECIMAL(6,2),
+        amount DECIMAL(9,2),
+        dolarblue DECIMAL(9,2),
         description VARCHAR(255),
         created_at DATETIME DEFAULT NOW(),
         updated_at DATETIME DEFAULT NULL,

@@ -71,6 +71,10 @@ if(!isset($_SESSION["current_month"])){
                     <input type="number" name="amount" step="any" id="modal-input-amount">
                 </div>
                 <input type="text" name="description" placeholder="descripción" id="modal-input-description">
+
+                <div class="date-text-advice"><p>Sólo modifica la fecha si necesitás una distinta a la del día de hoy</p></div>
+                <input type="date" name="new_date" class="new-date">
+
                 <input type="submit" name="submit" value="cargar" class="submit-btn">
             </form>
         </article>
@@ -85,6 +89,10 @@ if(!isset($_SESSION["current_month"])){
                     <input type="number" name="amount" step="any" id="modal-input-amount">
                 </div>
                 <input type="text" name="description" placeholder="descripción" id="modal-input-description">
+
+                <div class="date-text-advice"><p>Sólo modifica la fecha si necesitás una distinta a la del día de hoy</p></div>
+                <input type="date" name="new_date" class="new-date">
+
                 <input type="submit" name="submit" value="cargar" class="submit-btn">
             </form>
         </article>
@@ -120,18 +128,22 @@ if(!isset($_SESSION["current_month"])){
 
         <article id="table-show">
             <?php
+            
             //////////////////////////////////////
             //PAINT RESULT FOR CURRENT MONTH AT START
             //////////////////////////////////////
 
             // SQL query for  default values
-            
             $pass_date = "SELECT * FROM grp_" . $group_id . "_data WHERE MONTH(created_at) = " . $_SESSION["current_month"] . " AND YEAR(created_at) = " . $_SESSION["current_year"] . " ORDER BY created_at DESC";
             $result = mysqli_query($conn, $pass_date);
+
+         
+
 
             //calculate month´s total
             $month_total = 0;
             while ($row = mysqli_fetch_assoc($result)) {
+              
                 if ($row['transac_type'] == 'income') {
                     $month_total += $row['amount'];
                 } elseif ($row['transac_type'] == 'expense') {
@@ -144,9 +156,10 @@ if(!isset($_SESSION["current_month"])){
 
             //print each row as a list item
             $result2 = mysqli_query($conn, $pass_date);
+           
             echo "<ul class='data-ul'>";
             while ($row = mysqli_fetch_assoc($result2)) {
-
+           
 
             // make buttons for edit and delete
             $buttons = "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post' id='form-inner-li-crud-container'>
@@ -230,12 +243,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST["form_id"] == "form_expenses
              
              $sql = "INSERT INTO `$table_name` (transac_type, amount, dolarblue, description, inserted_by) VALUES (?, ?, ?, ?, ?)";
              
+             $sql_with_new_date = "INSERT INTO `$table_name` (transac_type, amount, dolarblue, description, created_at, inserted_by) VALUES (?, ?, ?, ?, ?, ?)";
+
+             if($_POST["new_date"] == ""){
              // Hacer una consulta preparada
              $stmt = $conn->prepare($sql);
              if (!$stmt){
                 die('Error: ' . mysqli_error($conn));
              }
              $stmt->bind_param("sddss", $transac_type, $amount, $dolar_blue, $description, $user_id);
+            }
+            else {
+                $new_time = date('Y-m-d H:i:s', strtotime($_POST["new_date"]));
+                 
+
+                $stmt = $conn->prepare($sql_with_new_date);
+             if (!$stmt){
+                die('Error: ' . mysqli_error($conn));
+                }
+             $stmt->bind_param("sddsss", $transac_type, $amount, $dolar_blue, $description, $new_time, $user_id);
+            }
+            
              $stmt->execute();
              
              mysqli_close($conn);

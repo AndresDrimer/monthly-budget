@@ -45,24 +45,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
         $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_SPECIAL_CHARS);
 
-        //check user existence in DB
-        $sql =  "SELECT * FROM users WHERE username = '$username'";
-
-
+        //check user existence in DB wuth prepared statment
+        $sql_login = "SELECT * FROM users WHERE username = ?";
         /** @var \mysqli $conn */
+        $stmt = $conn->prepare($sql_login);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
         
-        $result = mysqli_query($conn, $sql);
-
         //check password hash 
-        if (mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
-
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
             if (password_verify($password, $row["password"])) {
                 //save user data on session
                 $_SESSION["username"] = $username;
                 $_SESSION["user_id"] = $row["user_id"];
                 $_SESSION["email"] = $row["email"];
-
 
                  //regenerate session id
                 session_regenerate_id();

@@ -343,6 +343,13 @@ header {
 .submit-btn:hover {
   filter: grayscale();
 }
+
+.date-text-advice{
+  width:80%;
+  text-wrap: wrap;
+  margin:auto;
+  text-align: center;
+}
 /*toggler inside Add transactions modal*/
 .switch-container {
   display: flex;
@@ -627,6 +634,7 @@ footer {
   justify-content: space-between;
   box-shadow: 2px 4px 0px -2px gray;
   margin-top: 200px;
+
 }
 @media (min-width: 1800) {
   footer {
@@ -695,7 +703,7 @@ footer > section > p {
 
 /*Stats*/
 #stats-titles {
-  padding: 16px 0;
+  padding: 24px 0;
 }
 #stats-titles > h1 {
   padding: 0;
@@ -715,12 +723,17 @@ footer > section > p {
 }
 
 .accordion .label {
-  padding: 0px 0;
+  padding: 8px 0;
   font-size: 20px;
   color: black;
   cursor: pointer;
 }
-
+@media (min-width: 767px) {
+  .accordion .label {
+    padding:16px 0;
+    font-size: 24px;
+  }
+}
 .accordion .content {
   background: white;
   height: 0;
@@ -731,6 +744,7 @@ footer > section > p {
   transition: 0.5s;
   width: 100%;
 }
+
 .accordion .content > p{
   padding: 0 8px;
 }
@@ -750,14 +764,50 @@ footer > section > p {
   margin:auto;
   padding: 16px;
 }
+@media (min-width: 767px) {
+  #chart_users, #chart_percentages{
+    width: 50%;
+  }
+}
 #chart_bars{
   padding: 0px 4px;
   margin-top:8px;
+}
+@media (min-width: 767px) {
+  #chart_bars{
+    padding: 0px 16px;
+    margin-top:24px;
+  }
 }
 .small-text{
   font-size: 14px;
   padding: 12px;
 }
+@media (min-width: 767px) {
+  .small-text{
+  font-size: 16px;
+  padding: 16px;}
+}
 #label-usuario, #label-grupo{
   color:white;
+}
+
+/*Settings: hacer! agregar footer*/
+#settings-body{
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+#settings-title{
+  color: white;
+  font-size: 20px;
+  max-width:90%;
+  margin:auto;
+  padding: 32px 0;
+}
+@media (min-width: 767px) {
+  #settings-title {
+    font-size: 30px;
+  }
 }

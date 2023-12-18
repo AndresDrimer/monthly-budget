@@ -92,9 +92,7 @@ foreach ($data as $user_id => $user_data) {
 <body>
 
     <section id="stats-titles">
-
         <h1 class="white">Stats</h1>
-
         <h1 id="group-name-header-stats"> 📈 <?php echo strtoupper($actual_group["group_name"]); ?> 📈</h1>
     </section>
 
