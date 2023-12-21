@@ -1,8 +1,10 @@
 <?php
-session_start();
+
 include("header.php");
 include("database.php");
-
+if (session_id() == "") {
+    session_start();
+   }
 if(!isset($_SESSION["user_id"])){
     header("Location: login.php");
 }
@@ -21,16 +23,17 @@ if(!isset($_SESSION["user_id"])){
     <title>Monthly Budget</title>
 </head>
 
-<body>
-    <h1 class="white less-width margin-y" >INGRESÁ A UN GRUPO</h1>
+<body><?php
+echo "<h1 class='white less-width margin-y'>" . ($_SESSION["language"] == "espanol" ? "INGRESÁ A UN GRUPO" : "JOIN A GROUP") . "</h1>";?>
+ 
 
 
     <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
-        <label>Nombre del grupo: </label>
+        <label><?php echo $_SESSION["language"] == "espanol" ? "Nombre del grupo: " : "Group´s name"; ?></label>
         <input type="text" name="group_name"> <br>
         <label>Password: </label>
         <input type="text" name="group_password"><br>
-        <input type="submit" name="entrar" value="entrar" class="btns">
+        <input type="submit" name="entrar" value="<?php echo $_SESSION["language"] == "espanol" ? "entrar" : "enter"; ?>" class="btns">
     </form>
 
 
@@ -43,7 +46,9 @@ if(!isset($_SESSION["user_id"])){
 if ($_SERVER["REQUEST_METHOD"]  == "POST") {
     //check for empty fields
     if (empty($_POST["group_name"]) || empty($_POST["group_password"])) {
-        echo "Tenes que crear un nombre y un password para poder crear un nuevo grupo";
+        echo "<div class='error-msg-cont'><p>" .  ($_SESSION["language"] == "espanol" ? "Tenes que indicar el nombre y el password para acceder a un grupo" : "You have to write group´s name and password to acces a group") . "</p></div>";
+
+
     } else {
         //asign sanitized variables
         $group_name = filter_input(INPUT_POST, "group_name", FILTER_SANITIZE_SPECIAL_CHARS);
@@ -59,7 +64,8 @@ if ($_SERVER["REQUEST_METHOD"]  == "POST") {
             $row = mysqli_fetch_assoc($result);
 
             if (!isset($_SESSION["user_id"])) {
-                echo "necesitas estar logueado para ingresar a este grupo";
+                echo "<div class='error-msg-cont'><p>" . "necesitas estar logueado para ingresar a este grupo" . ($_SESSION["language"] == "espanol" ? "" : "You need to be logged in to enter this group") . "</p></div>";
+
             }
             $group_id  = $row["group_id"];
             if (password_verify($group_password, $row["group_password"])) {
@@ -74,7 +80,9 @@ if ($_SERVER["REQUEST_METHOD"]  == "POST") {
                 mysqli_close($conn);
                 header("Location: dashboard.php");
             } else {
-                echo "El PASSWORD es INCORRECTO, intenta de nuevo";
+                echo "<div class='error-msg-cont'><p>" . ($_SESSION["language"] == "espanol" ? "El PASSWORD es INCORRECTO, intenta de nuevo" : "The PASSWORD is INCORRECT, try again") . "</p></div>";
+
+
             }
         }
     }

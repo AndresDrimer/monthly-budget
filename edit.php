@@ -1,8 +1,11 @@
 <?php
 ob_start(); 
-session_start();
+
 include("database.php");
 include("header.php");
+if (session_id() == "") {
+    session_start();
+   }
 
 $group_id = $_SESSION["group_id"];
 $table_name = "grp_" . $group_id . "_data";

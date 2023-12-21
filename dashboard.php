@@ -1,9 +1,12 @@
 <?php
 ob_start();
-session_start();
+
 include("database.php");
 include("header.php");
 include 'utils/get_dolarblue_value.php';
+if (session_id() == "") {
+    session_start();
+   }
 
 $group_id = $_SESSION["group_id"];
 
@@ -55,12 +58,12 @@ if(!isset($_SESSION["current_month"])){
         </div>
 
         <div class="switch-container">
-            <label class="switch-label selected" id="label-gasto">gasto</label>
+            <label class="switch-label selected" id="label-gasto"><?php echo $_SESSION["language"] == "espanol" ? "gasto" : "expense"; ?></label>
             <label class="switch">
                 <input type="checkbox" id="switch-checkbox">
                 <span class="slider round"></span>
             </label>
-            <label class="switch-label" id="label-ingreso">ingreso</label>
+            <label class="switch-label" id="label-ingreso"><?php echo $_SESSION["language"] == "espanol" ? "ingreso" : "income"; ?></label>
         </div>
 
         <article id="form-article-expenses" class="visible">
@@ -70,12 +73,12 @@ if(!isset($_SESSION["current_month"])){
                     <span id="dolar-sign">$</span>
                     <input type="number" name="amount" step="any" id="modal-input-amount">
                 </div>
-                <input type="text" name="description" placeholder="descripción" id="modal-input-description">
+                <input type="text" name="description" placeholder="<?php echo $_SESSION["language"] == "espanol" ? "descripción" : "description"; ?>" id="modal-input-description">
 
-                <div class="date-text-advice"><p>Sólo modifica la fecha si necesitás una distinta a la del día de hoy</p></div>
+                <div class="date-text-advice"><p><?php echo $_SESSION["language"] == "espanol" ? "Sólo modifica la fecha si necesitás una distinta a la del día de hoy" : "Only modify the date if you need a different one than today"; ?></p></div>
                 <input type="date" name="new_date" class="new-date">
 
-                <input type="submit" name="submit" value="cargar" class="submit-btn">
+                <input type="submit" name="submit" value="<?php echo $_SESSION["language"] == "espanol" ? "cargar" : "add"; ?>" class="submit-btn">
             </form>
         </article>
 
@@ -128,7 +131,7 @@ if(!isset($_SESSION["current_month"])){
 
         <article id="table-show">
             <?php
-            
+
             //////////////////////////////////////
             //PAINT RESULT FOR CURRENT MONTH AT START
             //////////////////////////////////////
@@ -212,7 +215,8 @@ if(!isset($_SESSION["current_month"])){
 if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST["form_id"] == "form_expenses" || $_POST["form_id"] == "form_incomes")) {
     //check for empty fields
     if (empty($_POST["amount"]) || empty($_POST["description"])) {
-        echo "Tenes que completar monto y la descripción para cargar una nueva operación";
+        echo "<div class='error-msg-cont'><p>" .  ($_SESSION["language"] == "espanol" ? "Tenes que completar monto y la descripción para cargar una nueva operación" : "You have to complete the amount and the description to load a new operation") . "</p></div>";
+
     } else {
         //sanitize 
         $amount = filter_input(INPUT_POST, "amount", FILTER_SANITIZE_NUMBER_FLOAT);
@@ -222,7 +226,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST["form_id"] == "form_expenses
         $amount = filter_input(INPUT_POST, "amount", FILTER_VALIDATE_FLOAT);
 
         if ($amount === false) {
-            echo "el monto ingresado es incorrecto, por favor ingreselo nuevamente";
+            echo "<div class='error-msg-cont'><p>"  . ($_SESSION["language"] == "espanol" ? "el monto ingresado es incorrecto, por favor ingresalo nuevamente" : "The entered amount is incorrect, please enter it again") . "</p></div>";
+
         }
 
         $table_name = "grp_" . $group_id . "_data";
@@ -246,7 +251,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST["form_id"] == "form_expenses
              $sql_with_new_date = "INSERT INTO `$table_name` (transac_type, amount, dolarblue, description, created_at, inserted_by) VALUES (?, ?, ?, ?, ?, ?)";
 
              if($_POST["new_date"] == ""){
-             // Hacer una consulta preparada
+             // Make a prepared statement
              $stmt = $conn->prepare($sql);
              if (!$stmt){
                 die('Error: ' . mysqli_error($conn));

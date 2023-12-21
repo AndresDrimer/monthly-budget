@@ -1,7 +1,10 @@
 <?php
-session_start();
+
 include("header.php");
 include("database.php");
+if (session_id() == "") {
+    session_start();
+   }
 
 if(!isset($_SESSION["user_id"])){
     header("Location: login.php");
@@ -20,21 +23,22 @@ if(!isset($_SESSION["user_id"])){
     <title>Monthly Budget</title>
 </head>
 
-<body>
-    <h1 class="white">CREAR UN NUEVO GRUPO</h1>
+<body><?php
+echo "<h1 class='white'>" . ($_SESSION["language"] == "espanol" ? "CREAR UN NUEVO GRUPO" : "CREATE A NEW GROUP") . "</h1>";?>
 
 
     <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post" id="form_group">
     <input type="hidden" name="form_id" value="form_group_creation">
-        <label>Nombre de tu nuevo grupo: </label>
+        <label><?php echo $_SESSION["language"] == "espanol" ? "Nombre del nuevo grupo:" : "New groups´s name" ?> </label>
         <input type="text" name="group_name"> <br>
         <label>Password: </label>
-        <input type="text" name="group_password" placeholder="inventa un password"><br>
-        <input type="submit" name="crear" value="crear  🚀" class="btns">
+        <input type="password" name="group_password" ><br>
+        <input type="submit" name="crear" value="<?php echo $_SESSION["language"] == "espanol" ? "crear  🚀"  : "create  🚀" ;?>" class="btns">
     </form>
 
-    <br>
-    <p class="white less-width">⚡ Recordá guardar el nombre del GRUPO y su PASSWORD para poder acceder más adelante y compartirlo con quien quieras! ⚡ </p>
+    <br><?php
+    echo "<p class='white less-width'>" . ($_SESSION["language"] == "espanol" ? "⚡ Recordá guardar el nombre del GRUPO y su PASSWORD para poder acceder más adelante y compartirlo con quien quieras! ⚡" : "⚡ Remember to save the name of the GROUP and its PASSWORD to be able to access it later and share it with whoever you want! ⚡") . "</p>"; ?>
+
 
    
     
@@ -48,7 +52,8 @@ if(!isset($_SESSION["user_id"])){
 if ($_SERVER["REQUEST_METHOD"]  == "POST" && ($_POST["form_id"] == "form_group_creation") ) {
     //check for empty fields
     if (empty($_POST["group_name"]) || empty($_POST["group_password"])) {
-        echo "Tenes que crear un nombre y un password para poder crear un nuevo grupo";
+        echo "<div class='error-msg-cont'><p>"  . ($_SESSION["language"] == "espanol" ? "Tenes que crear un nombre y un password para poder crear un nuevo grupo" : "You have to create a name and a password to create a new group") . "</p></div>";
+
     } else {
         //asign sanitized variables
         $group_name = filter_input(INPUT_POST, "group_name", FILTER_SANITIZE_SPECIAL_CHARS);

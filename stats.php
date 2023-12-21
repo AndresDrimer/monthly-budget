@@ -1,7 +1,11 @@
 <?php
-session_start();
+
 include("database.php");
 include("header.php");
+if (session_id() == "") {
+    session_start();
+   }
+
 
 $group_id = $_SESSION["group_id"];
 $sql = "SELECT * FROM groups WHERE group_id = ?";
@@ -126,7 +130,7 @@ foreach ($data as $user_id => $user_data) {
                 echo '
             <div class="accordion" >
                 <div class="label">
-                    <p>Ver por usuario <span class="arrow">🔻</span></p>
+                    <p class="white">' . ($_SESSION["language"] == "espanol" ? "Ver por usuario" : "View by user") . '<span class="arrow">🔻</span></p>
                 </div>
                 <div class="content">
                     <section>
@@ -202,7 +206,7 @@ foreach ($data as $user_id => $user_data) {
 
                 // Print each user´s totals
                 echo '<div style="text-align:center;">';
-                echo '<div class="underline">Totales parciales</div>';
+                echo '<div class="underline">' . ($_SESSION["language"] == "espanol" ? "Totales parciales" : "Partial totals") . '</div>';
                 foreach ($rows as $row) {
                     echo '<p>' . $row[0] . ': $' . number_format($row[1], 2, '.', ',') . '</p>';
                 }
@@ -227,7 +231,7 @@ foreach ($data as $user_id => $user_data) {
 
                 // Print each user equality´s left
                 echo '<div style="text-align:center;">';
-                echo '<div class="underline">Compensación</div>';
+                echo '<div class="underline">' . ($_SESSION["language"] == "espanol" ? "Compensación" : "Compensation") . '</div>';
                 foreach ($equilibrium_per_user as $i => $equilibrium) {
                     if ($equilibrium > 0) {
                         $action = 'dar';
@@ -235,9 +239,10 @@ foreach ($data as $user_id => $user_data) {
                     } else {
                         $action = 'recibir';
                         $color = 'blue';
-                        $equilibrium = abs($equilibrium); // Convertir el equilibrio a un valor absoluto
+                        $equilibrium = abs($equilibrium); // Convertir eq to absolute
                     }
-                    echo '<p>' . $labels[$i] . ' debe ' . $action . ': $<span style="color: ' . $color . '">' . number_format($equilibrium, 2, '.', ',') . '</span></p>';
+                    echo '<p>' . $labels[$i] . ' ' . ($_SESSION["language"] == "espanol" ? "debe" : "must") . ' ' . $action . ': $<span style="color: ' . $color . '">' . number_format($equilibrium, 2, '.', ',') . '</span></p>';
+
                 }
                 echo '</div>';
             }
@@ -249,7 +254,7 @@ foreach ($data as $user_id => $user_data) {
 
         <div class="accordion">
             <div class="label">
-                <p>Valores absolutos <span class="arrow">🔻</span></p>
+                <p class="white"><?php echo $_SESSION["language"] == "espanol" ? "Valores absolutos" : "Absolute values"; ?><span class="arrow">🔻</span></p>
             </div>
             <div class="content">
                 <section>
@@ -279,7 +284,7 @@ foreach ($data as $user_id => $user_data) {
                         $income_percentage = ($income_total / $total) * 100;
                         $expense_percentage = ($expense_total / $total) * 100;
                     }
-                    // Calcula la relación porcentual entre el ingreso total y el egreso total.
+                    // Calculate relation between total income and total expense
                     if ($income_total == 0 && $expense_total == 0) {
                         $income_percentage = 0;
                         $expense_percentage = 0;
@@ -303,7 +308,7 @@ foreach ($data as $user_id => $user_data) {
                     echo ' const myChart2 = new Chart(ctx2, {';
                     echo ' type: "pie",';
                     echo ' data: {';
-                    echo '  labels: ["Ingresos", "Egresos"],';
+                    echo 'labels: ["' . ($_SESSION["language"] == "espanol" ? "Ingresos" : "Income") . '", "' . ($_SESSION["language"] == "espanol" ? "Egresos" : "Expenses") . '"],';
                     echo '  datasets: [{';
                     echo '    data: [' . $income_percentage . ', ' . $expense_percentage . '],';
                     echo '    backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)"],';
@@ -338,14 +343,16 @@ foreach ($data as $user_id => $user_data) {
 
                     // Show totals
                     echo '<div style="text-align:center;">';
-                    echo'<div class="underline">Totales</div>';
-                    echo "<p>Ingreso: $" . number_format($income_total, 2, '.', ',') . " (<span class='make-bold'>" .number_format($income_percentage, 2, '.', ',') . "%</span>)" . "</p>";
-                    echo "<p>Egreso: $" . number_format($expense_total, 2, '.', ',') . " (<span class='make-bold'>" . number_format($expense_percentage, 2, '.', ',') . "%</span>)". "</p>";
-                    echo"<p>Resultado: " . number_format($income_total-$expense_total, 2, '.', ',') . "</p>";
+                    echo '<div class="underline">' . ($_SESSION["language"] == "espanol" ? "Totales" : "Totals") . '</div>';
 
+                    echo "<p>" . ($_SESSION["language"] == "espanol" ? "Ingreso" : "Income") . ": $" . number_format($income_total, 2, '.', ',') . " (<span class='make-bold'>" . number_format($income_percentage, 2, '.', ',') . "%</span>)</p>";
+                    echo "<p>" . ($_SESSION["language"] == "espanol" ? "Egreso" : "Expense") . ": $" . number_format($expense_total, 2, '.', ',') . " (<span class='make-bold'>" . number_format($expense_percentage, 2, '.', ',') . "%</span>)</p>";
+                    echo "<p>" . ($_SESSION["language"] == "espanol" ? "Resultado" : "Result") . ": " . number_format($income_total-$expense_total, 2, '.', ',') . "</p>";
+                    
                     } 
                     else {
-                        echo'<p class="less-width" style="padding:16px 0;">este mes aún no tiene suficientes transacciones cargadas como para brindarte este gráfico.</p>';
+                        echo '<p class="less-width" style="padding:16px 0;">' . ($_SESSION["language"] == "espanol" ? "este mes aún no tiene suficientes transacciones cargadas como para brindarte este gráfico." : "this month does not have enough transactions loaded to provide you with this graph.") . '</p>';
+
                     }
                     ?>
 
@@ -359,7 +366,7 @@ foreach ($data as $user_id => $user_data) {
 
         <div class="accordion">
             <div class="label">
-                <p>Comparativo 12 meses<span class="arrow">🔻</span></p>
+                <p class="white"><?php echo $_SESSION["language"] == "espanol" ? "Comparativo 12 meses" : "Comparative 12 months"; ?><span class="arrow">🔻</span></p>
             </div>
             <div class="content">
               <section>
@@ -423,13 +430,14 @@ echo ' type: "bar",';
 echo ' data: {';
 echo ' labels: ' . json_encode($labels) . ',';
 echo ' datasets: [{';
-echo '    label: "Ingresos",';
+echo 'label: "' . ($_SESSION["language"] == "espanol" ? "Ingresos" : "Income") . '",';
+
 echo '    data: ' . json_encode($incomes) . ',';
 echo '    backgroundColor: "rgba(75, 192, 192, 0.2)",';
 echo '    borderColor: "rgba(75, 192, 192, 1)",';
 echo '    borderWidth: 1';
 echo ' }, {';
-echo '    label: "Egresos",';
+echo 'label: "' . ($_SESSION["language"] == "espanol" ? "Egresos" : "Expenses") . '",';
 echo '    data: ' . json_encode($expenses) . ',';
 echo '    backgroundColor: "rgba(255, 99, 132, 0.2)",';
 echo '    borderColor: "rgba(255, 99, 132, 1)",';
@@ -452,7 +460,8 @@ echo '</script>';
 
         // Print text behind
         echo '<div style="text-align:center;">';
-        echo '<p class="small-text">Los valores están expresados en dolar blue (venta) que se toma al día de cada transacción, para facilitar el seguimiento de su evolución aún en contextos de alta inflación</p>';
+        echo '<p class="small-text">' . ($_SESSION["language"] == "espanol" ? "Los valores están expresados en dolar blue (venta) que se toma al día de cada transacción, para facilitar el seguimiento de su evolución aún en contextos de alta inflación." : "The values are expressed in unofficial dollar price in Argentina, which is taken on the day of each transaction, to facilitate the tracking of its evolution even in contexts of high inflation.") . '</p>';
+
 ?>
 
               </section>
