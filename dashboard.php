@@ -1,9 +1,9 @@
 <?php
 ob_start();
 
-include("database.php");
-include("header.php");
-include 'utils/get_dolarblue_value.php';
+include("./database.php");
+include("./header.php");
+include './utils/get_dolarblue_value.php';
 if (session_id() == "") {
     session_start();
    }
@@ -38,8 +38,8 @@ if(!isset($_SESSION["current_month"])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/normalize.css">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
 
     <title>Monthly Budget</title>
 </head>
@@ -91,12 +91,12 @@ if(!isset($_SESSION["current_month"])){
                     <span id="dolar-sign">$</span>
                     <input type="number" name="amount" step="any" id="modal-input-amount">
                 </div>
-                <input type="text" name="description" placeholder="descripción" id="modal-input-description">
+                <input type="text" name="description"  placeholder="<?php echo $_SESSION["language"] == "espanol" ? "descripción" : "description"; ?>"  id="modal-input-description">
 
-                <div class="date-text-advice"><p>Sólo modifica la fecha si necesitás una distinta a la del día de hoy</p></div>
+                <div class="date-text-advice"><p><?php echo $_SESSION["language"] == "espanol" ? "Sólo modifica la fecha si necesitás una distinta a la del día de hoy" : "Only modify the date if you need a different one than today"; ?></p></div>
                 <input type="date" name="new_date" class="new-date">
 
-                <input type="submit" name="submit" value="cargar" class="submit-btn">
+                <input type="submit" name="submit" value="<?php echo $_SESSION["language"] == "espanol" ? "cargar" : "add"; ?>" class="submit-btn">
             </form>
         </article>
     </section>
@@ -203,8 +203,8 @@ if(!isset($_SESSION["current_month"])){
 
     <div id="gray-mask-for-body"></div>
    
-    <script src="script.js"></script>
-    <script src="script-dashboard.js"></script>
+    <script src="./script.js"></script>
+    <script src="./script-dashboard.js"></script>
    
 </body>
 

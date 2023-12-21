@@ -1,8 +1,8 @@
 <?php
 ob_start(); 
 
-include("database.php");
-include("header.php");
+include("./database.php");
+include("./header.php");
 if (session_id() == "") {
     session_start();
    }
@@ -29,14 +29,16 @@ $selected_row = mysqli_fetch_assoc($result);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/normalize.css">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
     <title>Monthly Budget</title>
 </head>
 
 <body id="body-edit">
-    <div id="btn-back" class="white"><p><a href="./dashboard.php"> ⬅ volver</a></p></div>
-<h1 id="edit-page-title" class="white">Editar entrada</h1>
+    <div id="btn-back" class="white"><p><a href="./dashboard.php"> ⬅ <?php
+echo $_SESSION["language"] == "espanol" ? "volver" : "back";?> </a></p></div>
+<h1 id="edit-page-title" class="white"><?php
+echo $_SESSION["language"] == "espanol" ? "Editar entrada" : "Edit"; ?></h1>
     <section>
         <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
             <input type="hidden" name="form_id" value="form_edit">
@@ -45,12 +47,13 @@ $selected_row = mysqli_fetch_assoc($result);
                 <input type="number" name="amount" step="any" id="edit-input-amount" value="<?php echo $selected_row["amount"]; ?>" class="edit-input"  id="edit-amount">
             </div>
             <input type="text" name="description" placeholder="descripción" id="edit-input-description" value="<?php echo $selected_row["description"] ?>" class="edit-input">
-            <input type="submit" name="submit" value="modificar" class="submit-btn" onclick='return confirm("¿Querés actualizar esta entrada?");'>
+            <input type="submit" name="submit" value="<?php
+echo $_SESSION["language"] == "espanol" ?"modificar" : "update"; ?>" class="submit-btn" onclick='return confirm("<?php echo $_SESSION["language"] == "espanol" ? "¿Querés actualizar esta entrada?" : "Do you want to update this entry?"; ?>");'>
         </form>
     </section>
 
     <div id="gray-mask-for-body"></div>
-    <script src="script.js"></script>
+    <script src="./script.js"></script>
 </body>
 
 </html>

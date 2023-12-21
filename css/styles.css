@@ -182,7 +182,9 @@ header {
   align-items: center;
   font-size: 16px;
 }
-
+#header-modal > nav > a, #header-modal > nav > form  {
+  padding:16px 0;
+}
 #hello-user-in-modal {
   font-family: Kristi;
   font-size: 30px;

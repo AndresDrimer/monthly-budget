@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+
+
 if(!isset($_SESSION['language'])) {
     $_SESSION['language'] = 'espanol';
  }

@@ -1,7 +1,7 @@
 <?php
 
-include("database.php");
-include("header.php");
+include("./database.php");
+include("./header.php");
 if (session_id() == "") {
     session_start();
    }
@@ -29,8 +29,8 @@ $actual_group = $result->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/normalize.css">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
     <title>Monthly Budget</title>
 </head>
 
@@ -134,11 +134,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST["form_id"] == "form_update_g
 
 <?php
 
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_lang'])){
+ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_lang'])){
+  if($_POST['form_id'] == 'form_lang_selector'){
     if ($_POST['submit_lang'] === 'ENGLISH') {
         $_SESSION['language'] = 'espanol';
     } else {
         $_SESSION['language'] = 'english';
     }
- }
+ }}
 ?>

@@ -1,4 +1,4 @@
-//NO LO ESTOY USANDO ESTO POR AHORA, DEJO ARCHIVO POR SIS E AGREGARA ESTE FEATURE A FUTURO.
+//NO LO ESTOY USANDO ESTO POR AHORA, DEJO ARCHIVO POR SI SE AGREGARA ESTE FEATURE A FUTURO.
 
     document.getElementById('form_group').addEventListener('submit', function(e) {
         e.preventDefault();
